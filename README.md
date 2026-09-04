@@ -110,8 +110,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
 ```
 
-The architecture and native wire format are documented in [docs/architecture.md](docs/architecture.md) and [docs/eventkit-protocol.md](docs/eventkit-protocol.md). The implementation-to-plan mapping lives in [docs/v0.1-checklist.md](docs/v0.1-checklist.md).
-
+The architecture and native wire format are documented in [docs/architecture.md](docs/architecture.md) and [docs/eventkit-protocol.md](docs/eventkit-protocol.md).
 ## License
 
 MIT
