@@ -2,6 +2,9 @@
 
 Kalendar is a fast, keyboard-first terminal calendar for macOS. It reads and writes the calendars already configured in Apple Calendar through a small native EventKit helper; the TUI and domain model stay backend-independent.
 
+<img width="1005" height="628" alt="Kalendar demo" src="https://github.com/user-attachments/assets/58b3c039-bf1b-4102-9080-fa98ef428e95" />
+
+
 ## Status
 
 Version 0.1 includes week, month, and 14-day agenda views; timed and all-day events; overlap layout; current-time and calendar colors; event details; create/edit/delete; safe recurring-event update and deletion scopes supported by EventKit; calendar filtering; search; configuration; responsive terminal handling; and a deterministic demo backend.
