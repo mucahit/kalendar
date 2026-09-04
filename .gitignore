@@ -1,0 +1,5 @@
+/target
+/dist
+/native/macos-calendar-bridge/.build
+*.log
+.DS_Store
