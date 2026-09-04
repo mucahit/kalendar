@@ -1,0 +1,26 @@
+class Kalendar < Formula
+  desc "Fast, keyboard-first terminal calendar for macOS"
+  homepage "https://github.com/@REPOSITORY@"
+  version "@VERSION@"
+  license "MIT"
+  depends_on macos: :ventura
+
+  on_arm do
+    url "https://github.com/@REPOSITORY@/releases/download/v@VERSION@/kalendar-v@VERSION@-aarch64-apple-darwin.tar.gz"
+    sha256 "@ARM64_SHA256@"
+  end
+
+  on_intel do
+    url "https://github.com/@REPOSITORY@/releases/download/v@VERSION@/kalendar-v@VERSION@-x86_64-apple-darwin.tar.gz"
+    sha256 "@X86_64_SHA256@"
+  end
+
+  def install
+    bin.install "bin/kalendar"
+    (libexec/"kalendar").install "libexec/kalendar/kalendar-eventkit"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/kalendar --version")
+  end
+end
