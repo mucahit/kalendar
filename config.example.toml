@@ -1,0 +1,17 @@
+default_view = "week"
+week_starts_on = "monday"
+time_format = "24h"
+date_format = "%d %b"
+day_start = "08:00"
+day_end = "20:00"
+default_event_duration_minutes = 60
+default_event_start = "09:00"
+show_weekends = true
+show_current_time = true
+hidden_calendars = []
+
+[theme]
+today = "cyan"
+selected = "blue"
+muted = "dark_gray"
+border = "dark_gray"

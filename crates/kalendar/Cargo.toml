@@ -1,0 +1,22 @@
+[package]
+name = "kalendar"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "A fast, keyboard-first terminal calendar for macOS"
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+dirs.workspace = true
+kalendar-core = { path = "../kalendar-core" }
+kalendar-macos = { path = "../kalendar-macos" }
+kalendar-tui = { path = "../kalendar-tui" }
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[lints]
+workspace = true
+
