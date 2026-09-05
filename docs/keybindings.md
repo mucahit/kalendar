@@ -15,6 +15,7 @@
 | `Tab`, `Shift+Tab` | Cycle selectable events |
 | `t` | Today |
 | `Enter` | Open selected event |
+| `o` | Join the selected meeting, when available |
 | `n` | New event |
 | `e` | Edit selected event |
 | `d` | Delete selected event |
@@ -24,6 +25,12 @@
 | `?` | Help |
 | `q` / `Ctrl+c` | Quit |
 | `Ctrl+z` | Suspend and safely restore after resume |
+
+## Event details
+
+When an event has a meeting URL, press `o` from the calendar or its event details to join it in your
+default browser. Kalendar recognizes meeting links in the event URL, location, and description
+fields. Use `e` to edit, `d` to delete, and `Esc` or `Enter` to close the details.
 
 ## Event editor
 

@@ -1,5 +1,6 @@
 use crate::action::Action;
 use crate::app::{App, EditorField, Mode, View};
+use crate::event_details::meeting_url;
 use crate::reducer::dispatch;
 use crate::ui;
 use anyhow::{Context, Result};
@@ -161,6 +162,10 @@ async fn handle_normal(app: &mut App, key: KeyEvent) {
             KeyCode::Tab => Some(Action::CycleEvent(1)),
             KeyCode::BackTab => Some(Action::CycleEvent(-1)),
             KeyCode::Enter => Some(Action::OpenSelected),
+            KeyCode::Char('o') => {
+                open_selected_meeting(app);
+                None
+            }
             KeyCode::Char('n') => Some(Action::NewEvent),
             KeyCode::Char('e') => Some(Action::EditSelected),
             KeyCode::Char('d') => Some(Action::DeleteSelected),
@@ -182,9 +187,21 @@ async fn handle_normal(app: &mut App, key: KeyEvent) {
 fn handle_detail(app: &mut App, key: KeyEvent) {
     match key.code {
         KeyCode::Esc | KeyCode::Enter => app.mode = Mode::Normal,
+        KeyCode::Char('o') => open_selected_meeting(app),
         KeyCode::Char('e') => app.start_edit_event(),
         KeyCode::Char('d') => app.start_delete_confirmation(),
         _ => {}
+    }
+}
+
+fn open_selected_meeting(app: &mut App) {
+    let Some(url) = app.selected().and_then(meeting_url) else {
+        return;
+    };
+    match std::process::Command::new("open").arg(&url).status() {
+        Ok(status) if status.success() => app.status = Some("Opening meeting link".into()),
+        Ok(status) => app.set_error(anyhow::anyhow!("opening the meeting link failed: {status}")),
+        Err(error) => app.set_error(anyhow::anyhow!(error).context("opening the meeting link")),
     }
 }
 

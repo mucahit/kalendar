@@ -1,4 +1,5 @@
 use crate::app::{App, EditorField, Mode, View, event_occurs_on};
+use crate::event_details::{description, meeting_url};
 use crate::geometry::layout_day;
 use chrono::{Datelike, Days, Local, Timelike};
 use kalendar_core::{CalendarId, Event};
@@ -96,8 +97,14 @@ fn render_header(frame: &mut Frame<'_>, area: Rect, app: &App) {
 
 fn render_footer(frame: &mut Frame<'_>, area: Rect, app: &App) {
     let help = match app.mode {
+        Mode::Normal if app.selected().and_then(meeting_url).is_some() => {
+            "o join   Enter details   n new   / search   c calendars   ? help   q quit"
+        }
         Mode::Normal => {
             "1 agenda  2 week  3 month   n new   / search   c calendars   ? help   q quit"
+        }
+        Mode::EventDetail if app.selected().and_then(meeting_url).is_some() => {
+            "o join   e edit   d delete   Esc close"
         }
         Mode::EventDetail => "e edit   d delete   Esc close",
         Mode::EventEditor => "Tab next   ←/→ choose/toggle   Ctrl+S save   Esc cancel",
@@ -556,17 +563,38 @@ fn render_detail(frame: &mut Frame<'_>, area: Rect, app: &App) {
             Span::raw(&recurrence.description),
         ]));
     }
+    let meeting = meeting_url(event);
     if let Some(url) = &event.url {
         lines.push(Line::from(vec![
-            Span::styled("URL        ", Style::default().fg(muted_color(app))),
+            Span::styled(
+                if meeting.as_deref() == Some(url) {
+                    "Meeting    "
+                } else {
+                    "URL        "
+                },
+                Style::default().fg(muted_color(app)),
+            ),
             Span::raw(url),
         ]));
     }
-    if let Some(notes) = &event.notes {
-        lines.push(Line::raw(""));
-        lines.push(Line::raw(notes));
+    if let Some(url) = meeting
+        .as_deref()
+        .filter(|url| event.url.as_deref() != Some(*url))
+    {
+        lines.push(Line::from(vec![
+            Span::styled("Meeting    ", Style::default().fg(muted_color(app))),
+            Span::raw(url),
+        ]));
     }
-    let popup = centered(area, 64, 18);
+    if let Some(description) = description(event) {
+        lines.push(Line::raw(""));
+        lines.extend(description.lines().map(|line| Line::raw(line.to_owned())));
+    }
+    let detail_height = u16::try_from(lines.len())
+        .unwrap_or(u16::MAX)
+        .saturating_add(2)
+        .max(18);
+    let popup = centered(area, 64, detail_height);
     frame.render_widget(Clear, popup);
     frame.render_widget(
         Paragraph::new(lines).wrap(Wrap { trim: true }).block(
@@ -850,7 +878,7 @@ fn render_help(frame: &mut Frame<'_>, area: Rect, app: &App) {
                 .fg(Color::Cyan)
                 .add_modifier(Modifier::BOLD),
         ),
-        Line::raw("n new     Enter details     e edit     d delete"),
+        Line::raw("n new   Enter details   o join   e edit   d delete"),
         Line::raw(""),
         Line::styled(
             "Other",
@@ -1112,6 +1140,17 @@ mod tests {
 
         app.view = View::Week;
         app.selected_event = Some(kalendar_core::EventId("design".into()));
+        app.mode = Mode::Normal;
+        terminal.draw(|frame| render(frame, &app)).unwrap();
+        let content = terminal
+            .backend()
+            .buffer()
+            .content()
+            .iter()
+            .map(|cell| cell.symbol())
+            .collect::<String>();
+        assert!(content.contains("o join"));
+
         app.mode = Mode::EventDetail;
         terminal.draw(|frame| render(frame, &app)).unwrap();
         let content = terminal
@@ -1123,6 +1162,27 @@ mod tests {
             .collect::<String>();
         assert!(content.contains("Studio 2"));
         assert!(content.contains("calendar interaction prototypes"));
+
+        let selected = app
+            .events
+            .iter_mut()
+            .find(|event| event.id.0 == "design")
+            .unwrap();
+        selected.url = None;
+        selected.notes =
+            Some("<p>Review agenda</p><p>Join via https://meet.google.com/abc-defg-hij</p>".into());
+        terminal.draw(|frame| render(frame, &app)).unwrap();
+        let content = terminal
+            .backend()
+            .buffer()
+            .content()
+            .iter()
+            .map(|cell| cell.symbol())
+            .collect::<String>();
+        assert!(content.contains("Review agenda"));
+        assert!(content.contains("Join via"));
+        assert!(content.contains("o join"));
+        assert!(!content.contains("<p>"));
 
         app.mode = Mode::Normal;
         app.visible_calendars.clear();

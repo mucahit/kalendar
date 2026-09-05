@@ -94,7 +94,7 @@ impl MockBackend {
         ];
         events[3].location = Some("Studio 2".into());
         events[3].notes = Some("Review the new calendar interaction prototypes.".into());
-        events[3].url = Some("https://example.com/design-review".into());
+        events[3].url = Some("https://meet.google.com/qwe-rtyu-iop".into());
         events[0].recurrence = Some(Recurrence {
             description: "Every weekday".into(),
         });

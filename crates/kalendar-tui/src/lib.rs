@@ -2,6 +2,7 @@ mod action;
 mod app;
 mod command;
 mod config;
+mod event_details;
 mod geometry;
 mod reducer;
 mod terminal;

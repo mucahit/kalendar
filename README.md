@@ -71,6 +71,7 @@ The footer shows contextual shortcuts, and `?` opens the complete help overlay.
 | `t` | Today |
 | `Ctrl+j` / `Ctrl+k` | Scroll visible hours |
 | `Enter` | Event details |
+| `o` | Join the selected meeting, when available |
 | `n`, `e`, `d` | New, edit, delete |
 | `c` | Calendar visibility |
 | `/` | Search |
