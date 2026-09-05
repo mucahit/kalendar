@@ -146,7 +146,7 @@ private func setOptionalText(_ dictionary: [String: Any], key: String, setter: (
 private func handle(method: String, params: [String: Any]) throws -> Any {
     switch method {
     case "ping":
-        return ["version": "0.1.0"]
+        return ["version": "0.1.1"]
     case "permissions":
         return permissionStatus()
     case "request_permissions":

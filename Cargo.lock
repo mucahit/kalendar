@@ -662,7 +662,7 @@ dependencies = [
 
 [[package]]
 name = "kalendar"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "chrono",
@@ -677,7 +677,7 @@ dependencies = [
 
 [[package]]
 name = "kalendar-core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -690,7 +690,7 @@ dependencies = [
 
 [[package]]
 name = "kalendar-macos"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -702,7 +702,7 @@ dependencies = [
 
 [[package]]
 name = "kalendar-tui"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "chrono",

@@ -277,7 +277,7 @@ mod tests {
     async fn native_bridge_answers_protocol_without_requesting_permission() {
         let client = BridgeClient::discover().unwrap();
         let result: Value = client.request("ping", json!({})).await.unwrap();
-        assert_eq!(result["version"], "0.1.0");
+        assert_eq!(result["version"], "0.1.1");
 
         let backend = MacOsBackend { client };
         assert!(matches!(

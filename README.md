@@ -56,7 +56,7 @@ This installs `kalendar` into `PREFIX/bin` and `kalendar-eventkit` into `PREFIX/
 ./scripts/package-release.sh x86_64-apple-darwin
 ```
 
-Pushing a `v0.1.0` tag runs the release workflow. Set the repository variable `HOMEBREW_TAP_REPOSITORY` and secret `HOMEBREW_TAP_TOKEN` if the workflow should also update a tap.
+Pushing a `v0.1.1` tag runs the release workflow. Set the repository variable `HOMEBREW_TAP_REPOSITORY` and secret `HOMEBREW_TAP_TOKEN` if the workflow should also update a tap.
 
 ## Controls
 
